@@ -13,7 +13,9 @@ class RebelType(DjangoObjectType):
         model = Rebel
 
 class RebelQuery:
-    all_ships = graphene.List(ShipType)
+    all_ships = graphene.List(ShipType, name=graphene.String())
 
-    def resolve_all_ships(self, *args, **kwargs):
+    def resolve_all_ships(self, *args, name=None,**kwargs):
+        if name:
+            return Ship.objects.filter(name__icontains=name)
         return Ship.objects.all()
